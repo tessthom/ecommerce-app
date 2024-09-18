@@ -1,4 +1,4 @@
-# Project Runner
+# eCommerce App
 
 A full-featured eCommerce app built with Node JS and Express. 
 
