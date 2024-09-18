@@ -4,6 +4,7 @@ A full-featured eCommerce app built with Node JS and Express.
 
 ## Features
 
+- Express 
 - Admin dashboard
 - Product creation form with image upload
 - User auth
