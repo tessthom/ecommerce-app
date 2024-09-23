@@ -1,6 +1,9 @@
 # Node modules
 node_modules/
 
+# 'Database' files
+/repos/
+
 # Logs
 logs/
 *.log
