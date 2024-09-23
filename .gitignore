@@ -3,6 +3,7 @@ node_modules/
 
 # 'Database' files
 /repos/
+/users.json
 
 # Logs
 logs/
