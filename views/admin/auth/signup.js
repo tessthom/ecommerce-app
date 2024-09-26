@@ -7,20 +7,34 @@ export default ({ req, errors }) => {  // assume will be passed in object with t
   return layout({  // call layout() and pass in object with snippet as val of content property
     title: `Sign Up`,
     content: `
-      <div class="form-wrapper">  
-        Your ID is: ${req.session.userId}
-        <form method="POST">
-          <label for="email">Email:</label>
-          <input type="email" id="email" name="email" />
-          ${getError(errors, 'email')}
-          <label for="password">Password:</label>
-          <input type="password" id="password" name="password" />
-          ${getError(errors, 'password')}
-          <label for="password-confirmation">Confirm password:</label>
-          <input type="password" id="password-confirmation" name="passwordConfirmation" />
-          ${getError(errors, 'passwordConfirmation')}
-          <button>Sign Up</button>
-        </form>
+      <div class="container">
+        <div class="columns is-centered">
+          <div class="column is-one-quarter">
+            <form method="POST">
+              <h1 class="title">Sign Up</h1>
+              <div class="field">
+                <label class="label">Email</label>
+                <input required class="input" placeholder="Email" name="email" />
+                <p class="help is-danger">${getError(errors, 'email')}</p>
+              </div>
+              <div class="field">
+                <label class="label">Password</label>
+                <input required class="input" placeholder="Password" name="password" type="password" />
+                <p class="help is-danger">${getError(errors, 'password')}</p>
+              </div>
+              <div class="field">
+                <label class="label">Password Confirmation</label>
+                <input required class="input" placeholder="Password Confirmation" name="passwordConfirmation" type="password" />
+                <p class="help is-danger">${getError(
+                  errors,
+                  'passwordConfirmation'
+                )}</p>
+              </div>
+              <button class="button is-primary">Submit</button>
+            </form>
+            <a href="/signin">Have an account? Sign In</a>
+          </div>
+        </div>
       </div>
     `
   });
