@@ -19,3 +19,4 @@ This project relies on the following:
 - **Nodemon**
 - **express-validator**
 - **node:crypto**
+- **Multer**
