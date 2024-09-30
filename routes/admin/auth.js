@@ -1,12 +1,15 @@
-
+// external
 import express from 'express';
-import { check, validationResult } from 'express-validator';
 
+// local
+import middlewares from './middlewares.js';
 import usersRepo from '../../repos/users.js';
 import signupTemplate from '../../views/admin/auth/signup.js';
 import signinTemplate from '../../views/admin/auth/signin.js';
 import validators from './validators.js';
+import signup from '../../views/admin/auth/signup.js';
 
+const { handleErrors } = middlewares;
 const { 
   requireEmail, 
   requirePassword, 
@@ -27,23 +30,16 @@ router.post(
   '/signup', 
   // extracted validation chains to `/routes/admin/validators.js`, so can now just spec them with their property names
   [requireEmail, requirePassword, requirePasswordConfirmation], 
+  handleErrors(signupTemplate),
   async (req, res) => {
-    // handle request
-    const errors = validationResult(req); // express-validator library attaches results of validation chain to the req object. give validationResult() access by passing in req object. when validation errors occur, data about them will be stored in an array of objects, where each object has data about a validation error (value, msg, param, location).
-    
-    if (!errors.isEmpty()) {  // isEmpty() is express-validator method. use to check if any errors exist
-      return res.send(signupTemplate({ req, errors })); // respond with same signup form template, passing in access to errors object. 
-    }
-
-    const { email, password, passwordConfirmation } = req.body;
-
+    const { email, password } = req.body;
     // create user in users repo to represent this person
     const user = await usersRepo.create({ email, password }); // returns user `attrs` object
 
     // store the id of that user inside the user's cookie
     req.session.userId = user.id; // cookieSession will see this new prop on the `req.session` object whenever res.send() is called and append it as a string to the cookie sent to the browser for storage on client.
 
-    res.send('Account created!');
+    res.redirect('/admin/products');  // send get req to products index page
   }
 );
 
@@ -56,20 +52,14 @@ router.get('/signin', (req, res) => {
 router.post(
   '/signin', 
   [requireExistingEmail, requireMatchingPassword],
+  handleErrors(signinTemplate),
   async (req, res) => {
-    const errors = validationResult(req);
-    
-    if (!errors.isEmpty()) {  // if errors exist, respond with signin template and pass in object with errors to access from template file
-      return res.send(signinTemplate({ errors }));
-    }
-
     const { email } = req.body;
-
     const user = await usersRepo.getOneBy({ email });
 
     req.session.userId = user.id; // executes only if matching email + password found, set session property to stored user ID value to indicate that user is signed in
 
-    res.send(`You're signed in!`);
+    res.redirect('/admin/products');
   }
 );
 

@@ -4,6 +4,7 @@ node_modules/
 # 'Database' files
 /repos/
 /users.json
+/products.json
 
 # Logs
 logs/

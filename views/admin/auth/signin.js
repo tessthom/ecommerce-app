@@ -9,7 +9,7 @@ export default ({ errors }) => {
     content: `
       <div class="container">
         <div class="columns is-centered">
-          <div class="column is-one-quarter">
+          <div class="column is-one-third">
             <form method="POST">
               <h1 class="title">Sign in</h1>
               <div class="field">

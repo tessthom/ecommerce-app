@@ -1,6 +1,6 @@
 export default ({ title, content }) => { // gets passed an object with the page-specific HTML string for <body> contents
   return `
-    <!DOCTYPE>
+    <!DOCTYPE html>
     <html lang="en">
       <head>
         <meta charset="UTF-8">

@@ -7,6 +7,16 @@ import usersRepo from '../../repos/users.js';
 
 // ^extracted all this logic from auth.js into this custom validators object
 export default {
+  requireTitle: check('title')
+    .trim()
+    .escape()
+    .isLength({ min: 3, max: 50 })
+    .withMessage('Must be between 3 and 50 characters'),
+  requirePrice: check('price')
+    .trim()
+    .toFloat()  // convert input string into floating pt num
+    .isFloat({ min: 1 })  // check if field is fp num >= 1
+    .withMessage('Must be creater than 1'), 
   requireEmail: check('email')
    .trim()
    .escape()
