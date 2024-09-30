@@ -9,7 +9,6 @@ import usersRepo from '../../repos/users.js';
 export default {
   requireTitle: check('title')
     .trim()
-    .escape()
     .isLength({ min: 3, max: 50 })
     .withMessage('Must be between 3 and 50 characters'),
   requirePrice: check('price')
@@ -19,7 +18,6 @@ export default {
     .withMessage('Must be creater than 1'), 
   requireEmail: check('email')
    .trim()
-   .escape()
    .normalizeEmail()
    .isEmail()
    .withMessage('Must be a valid email address')
@@ -37,7 +35,7 @@ export default {
     .trim()
     .isLength({ min: 4, max: 20 })
     .withMessage('Must be between 4 and 20 characters')
-    .custom((passwordConfirmation, { req }) => {
+    .custom(async (passwordConfirmation, { req }) => {
       // this custom validator needs to compare the passwordConfirmation input with the `password` field (which is on the request object's body). can spec a 2nd param on the custom validator fn which will receive an object containing the request object when called. easy to destructure `req` off of it, then use it to get to `body.password`.
       if (passwordConfirmation !== req.body.password) {
         throw new Error('Passwords must match');
@@ -47,7 +45,7 @@ export default {
     .trim()
     .normalizeEmail()
     .isEmail()
-    .withMessage('Must enter a valid email')
+    .withMessage('Must enter a valid email address')
     .custom(async (email) => {
       const user = await usersRepo.getOneBy({ email });
       if (!user) {
@@ -62,6 +60,7 @@ export default {
       if (!user) {
         throw new Error('Invalid password'); // technically not an accurate message, but this will throw only if user in undefined, so makes the most sense to say this.
       }
+      
       const validPassword = await usersRepo.comparePasswords(
         user.password,
         password

@@ -4,6 +4,7 @@ import helpers from '../../helpers.js';
 const { getError } = helpers;
 
 export default ({ req, errors }) => {  // assume will be passed in object with the req property which contains the req object from the req handler, and an errors object that holds any errors from validation chains. errors will be undefined if none thrown.
+  console.log(errors);
   return layout({  // call layout() and pass in object with snippet as val of content property
     title: `Sign Up`,
     content: `

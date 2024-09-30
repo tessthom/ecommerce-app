@@ -43,6 +43,12 @@ router.post(
   }
 );
 
+// signout handler
+router.get('/signout', (req, res) => {
+  req.session = null; // clear user data from session
+  res.send('You are signed out.');
+});
+
 // signin route handler
 router.get('/signin', (req, res) => {
   res.send(signinTemplate({})); // signinTemplate() returns string with html for signin form. passing in empty object so that when destructuring off of the argument in signin.js, wont be undefined.
@@ -55,6 +61,7 @@ router.post(
   handleErrors(signinTemplate),
   async (req, res) => {
     const { email } = req.body;
+    
     const user = await usersRepo.getOneBy({ email });
 
     req.session.userId = user.id; // executes only if matching email + password found, set session property to stored user ID value to indicate that user is signed in
@@ -63,10 +70,5 @@ router.post(
   }
 );
 
-// signout handler
-router.get('/signout', (req, res) => {
-  req.session = null;
-  res.send('You are signed out.');
-});
 
 export default router;
